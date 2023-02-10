@@ -5,31 +5,65 @@ using System;
 
 public class Player : MonoBehaviour
 {
-    public int Talent;
-    public float TalentSpeed;
-    public float TalentTime;
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (Talent < 0)
-        {
-            Debug.Log("Tqt Start");
-        }
-        else
-        {
-            Debug.Log(TalentSpeed);
-        }
-    }
+	public Rigidbody rb;
+	public bool intoJump;
+	private bool goingRight;
+	private bool goingLeft;
+	private bool isRunning;
+	private int tmp;
+	// Start is called before the first frame update
+	void Start()
+	{
+		Debug.Log("Tqt Start");
+		rb = GetComponent<Rigidbody>();
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (Talent < 0)
-            {
-                Console.Write("Oui");
-            }
-        }
+	// Update is called once per frame
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			intoJump = true;
+		}
+		if (Input.GetKeyDown(KeyCode.LeftArrow))
+		{
+			goingLeft = true;
+		}
+		if (Input.GetKeyDown(KeyCode.RightArrow))
+		{
+			goingRight = true;
+		}
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			isRunning = true;
+		}
+	}
+
+	private void FixedUpdate()
+	{
+		tmp = isRunning ? 6 : 3;
+		if (intoJump)
+		{
+			rb.AddForce(Vector3.up * tmp, ForceMode.VelocityChange);
+			intoJump = false;
+			isRunning = false;
+		}
+		if (goingRight)
+		{
+			rb.AddForce(Vector3.right * tmp, ForceMode.VelocityChange);
+			goingRight = false;
+			isRunning = false;
+
+		}
+		if (goingLeft)
+		{
+			rb.AddForce(Vector3.right * -tmp, ForceMode.VelocityChange);
+			goingLeft = false;
+			isRunning = false;
+		}
+	}
+	private void OnTriggerEnter(Collider other)
+	{
+		Destroy(other.gameObject);
 	}
 }

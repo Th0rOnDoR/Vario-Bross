@@ -236,6 +236,8 @@ obj/
 *.user
 *.unityproj
 *.booproj
+*/.vs/*
+*/.vsconfig
 
 # ===================================== #
 # VS Code generated #
